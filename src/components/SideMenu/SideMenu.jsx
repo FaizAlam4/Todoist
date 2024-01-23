@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import social from "../../assets/social.png";
 import myApi from "../../api/myapi.js";
+import { Link } from "react-router-dom";
 import "./SideMenu.css";
 import {
   PlusOutlined,
@@ -18,6 +19,8 @@ function SideMenu() {
     myApi.get(`https://api.todoist.com/rest/v2/projects`).then((data) => {
       console.log("Faiz:", data);
       setProjectData(data);
+    }).catch((err)=>{
+      console.log(err)
     });
   }, []);
 
@@ -69,17 +72,19 @@ function SideMenu() {
           {showProject
             ? projectData.map((ele) => (
                 <div className="list-block" key={ele.id}>
-                  <img id="social" src={social} alt="" />{" "}
-                  <li
-                    style={{
-                      lineHeight: "1",
-                      textAlign: "left",
-                      marginLeft: "15px",
-                      listStyle: "none",
-                    }}
-                  >
-                    {ele.name}
-                  </li>{" "}
+                  <Link to={`/project/${ele.id}`} className="list-block">
+                    <img id="social" className="list-block-item" src={social} alt="" />{" "}
+                    <li className="list-block-item"
+                      style={{
+                        lineHeight: "1",
+                        textAlign: "left",
+                        marginLeft: "15px",
+                        listStyle: "none",
+                      }}
+                    >
+                      {ele.name}
+                    </li>{" "}
+                  </Link>
                 </div>
               ))
             : null}

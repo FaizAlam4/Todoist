@@ -1,7 +1,9 @@
 import { Layout } from "antd";
 const { Header, Content, Sider } = Layout;
 import Navigation from "../Navigation/Navigation.jsx";
+import ProjectSection from "../ProjectSection/ProjectSection.jsx";
 import SideMenu from "../SideMenu/SideMenu.jsx";
+import { Routes, Route } from "react-router-dom";
 
 const headerStyle = {
   textAlign: "center",
@@ -16,7 +18,7 @@ const contentStyle = {
   minHeight: 120,
   lineHeight: "120px",
   color: "black",
-  backgroundColor:'white',
+  backgroundColor: "white",
 };
 const siderStyle = {
   textAlign: "center",
@@ -43,7 +45,11 @@ function MyLayout() {
         <Header style={headerStyle}>
           <Navigation />
         </Header>
-        <Content style={contentStyle}>Content</Content>
+        <Content style={contentStyle}>
+          <Routes>
+            <Route path={"project/:id"} element={<ProjectSection />}></Route>
+          </Routes>
+        </Content>
       </Layout>
     </Layout>
   );

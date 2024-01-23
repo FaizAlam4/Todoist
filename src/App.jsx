@@ -1,10 +1,13 @@
 import "./App.css";
 import MyLayout from "./components/Layout/MyLayout";
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
   return (
     <>
-      <MyLayout />
+      <Router>
+        <MyLayout />
+      </Router>
     </>
   );
 }
