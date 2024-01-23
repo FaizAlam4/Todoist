@@ -23,7 +23,7 @@
     align-items: center;
     width: 100%;
     text-decoration: none;
-    color: inherit; 
+    color: inherit;
 }
 
 #social {
@@ -37,8 +37,31 @@
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-around;
-    gap: 15px;
+    gap: 0px;
+    line-height: 2
 }
-.list-block:hover{
-color: red;
+
+.list-block:hover {
+    color: red;
+}
+
+.list-block-item-2 {
+    line-height: 1;
+    text-align: left;
+    margin-left: 15px;
+    list-style: none;
+}
+
+.list-block-one {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.ellipsis:hover {
+
+    color: red;
+
+
 }

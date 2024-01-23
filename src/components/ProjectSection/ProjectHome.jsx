@@ -56,11 +56,10 @@ function ProjectHome() {
               fontSize: "0.9rem",
             }}
           >
-            <option value=""></option>
-            <option value="Active" selected>
-              Active projects
+            <option value="active">Active projects</option>
+            <option value="archive" defaultChecked>
+              Archived projects
             </option>
-            <option value=""></option>
           </select>
         </div>
 

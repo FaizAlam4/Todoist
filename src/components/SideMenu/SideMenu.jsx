@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import social from "../../assets/social.png";
+
+import ProjectItem from "../ProjectSection/ProjectItem.jsx";
 import myApi from "../../api/myapi.js";
 import { Link } from "react-router-dom";
 import { Modal, Switch } from "antd";
@@ -13,6 +14,7 @@ import {
   RightOutlined,
   ProfileFilled,
   DownOutlined,
+  
 } from "@ant-design/icons";
 
 function SideMenu() {
@@ -25,7 +27,7 @@ function SideMenu() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [input, setInput] = useState("");
-
+  
   const requestData = {
     name: input,
   };
@@ -152,27 +154,7 @@ function SideMenu() {
             <div style={{ fontSize: "0.6rem", color: "gray" }}>Loading...</div>
           ) : showProject ? (
             projectData.map((ele) => (
-              <div className="list-block" key={ele.id}>
-                <Link to={`/project/${ele.id}`} className="list-block">
-                  <img
-                    id="social"
-                    className="list-block-item"
-                    src={social}
-                    alt=""
-                  />{" "}
-                  <li
-                    className="list-block-item"
-                    style={{
-                      lineHeight: "1",
-                      textAlign: "left",
-                      marginLeft: "15px",
-                      listStyle: "none",
-                    }}
-                  >
-                    {ele.name}
-                  </li>{" "}
-                </Link>
-              </div>
+              <ProjectItem key={ele.id} ele={ele}/>
             ))
           ) : null}
         </ul>

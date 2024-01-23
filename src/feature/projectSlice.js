@@ -19,14 +19,19 @@ export const projectSlice = createSlice({
         projectData: [...state.projectData, action.payload],
       };
     },
-    // deleteProject: (state, action)=>{
-    //   return {
-
-    //   }
-    // }
+    deleteProject: (state, action) => {
+      const updatedData = state.projectData.filter(
+        (ele) => ele.id != action.payload
+      );
+      return {
+        ...state,
+        projectData: [...updatedData],
+      };
+    },
   },
 });
 
-export const { displayProject, createProject} = projectSlice.actions;
+export const { displayProject, createProject, deleteProject } =
+  projectSlice.actions;
 
 export default projectSlice.reducer;

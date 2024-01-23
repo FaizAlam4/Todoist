@@ -35,8 +35,8 @@ const requests = {
 
   delete: async (url) => {
     try {
-      const data = await axios.delete(url);
-      return data.data;
+      const data = await axios.delete(url,{ headers: headers });
+      return data;
     } catch (err) {
       console.log(err);
     }
