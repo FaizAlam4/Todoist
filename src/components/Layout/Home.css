@@ -1,0 +1,15 @@
+.home-wrapper{
+
+    width: 70%;
+    margin: auto;
+    text-align: left;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    align-content: start;
+    gap:10px
+}
+#input{
+    width: 100px;
+    height: 40px;
+}
