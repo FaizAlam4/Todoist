@@ -15,9 +15,9 @@ const requests = {
     }
   },
 
-  post: async (url) => {
+  post: async (url,requestData,headerData) => {
     try {
-      const data = await axios.post(url);
+      const data = await axios.post(url,requestData,{headers:{...headerData,Authorization: `Bearer ${token}`}});
       return data.data;
     } catch (err) {
       console.log(err);

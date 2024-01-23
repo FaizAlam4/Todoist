@@ -1,6 +1,9 @@
 import { ProfileFilled, SearchOutlined } from "@ant-design/icons";
-import "./Home.css";
-function Home() {
+
+
+import "./ProjectHome.css";
+function ProjectHome() {
+
   return (
     <div>
       <div className="home-wrapper">
@@ -61,12 +64,10 @@ function Home() {
           </select>
         </div>
 
-        <div>
-          {}
-        </div>
+        <div>{}</div>
       </div>
     </div>
   );
 }
 
-export default Home;
+export default ProjectHome;

@@ -2,7 +2,7 @@ import { Layout } from "antd";
 const { Header, Content, Sider } = Layout;
 import Navigation from "../Navigation/Navigation.jsx";
 import ProjectSection from "../ProjectSection/ProjectSection.jsx";
-import Home from "./Home.jsx";
+import ProjectHome from "../ProjectSection/ProjectHome.jsx";
 import SideMenu from "../SideMenu/SideMenu.jsx";
 import { Routes, Route } from "react-router-dom";
 
@@ -48,7 +48,9 @@ function MyLayout() {
         </Header>
         <Content style={contentStyle}>
           <Routes>
-            <Route path={'/'} element={<Home/>}></Route>
+         
+            <Route path={'/'} element={<ProjectHome/>}> </Route>
+            <Route path={'/project'} element={<ProjectHome/>}></Route>
             <Route path={"project/:id"} element={<ProjectSection />}></Route>
           </Routes>
         </Content>
