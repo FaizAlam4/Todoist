@@ -14,15 +14,19 @@ function SideMenu() {
   const [show, setShow] = useState(false);
   const [showProject, setShowProject] = useState(false);
   const [projectData, setProjectData] = useState([]);
+  const [loading, setLoading]=useState(true)
 
   useEffect(() => {
     myApi.get(`https://api.todoist.com/rest/v2/projects`).then((data) => {
       console.log("Faiz:", data);
       setProjectData(data);
+      setLoading(false)
     }).catch((err)=>{
       console.log(err)
     });
   }, []);
+
+
 
   return (
     <div
@@ -69,7 +73,8 @@ function SideMenu() {
 
       <div style={{ marginTop: "20px" }}>
         <ul className="list-item-container">
-          {showProject
+          {loading? <div style={{fontSize:'0.6rem', color:'gray'}}>Loading...</div>:
+          showProject
             ? projectData.map((ele) => (
                 <div className="list-block" key={ele.id}>
                   <Link to={`/project/${ele.id}`} className="list-block">
