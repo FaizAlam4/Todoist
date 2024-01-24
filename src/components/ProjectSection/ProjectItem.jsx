@@ -9,15 +9,40 @@ import social from "../../assets/social.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./ProjectItem.css";
-import { Popover, Button } from "antd";
+import { Popover, Button, Modal, Switch } from "antd";
 import myApi from "../../api/myapi.js";
+import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
-import { deleteProject } from "../../feature/projectSlice";
+import { deleteProject, editProject } from "../../feature/projectSlice";
 
 function ProjectItem({ ele }) {
   const dispatch = useDispatch();
 
   const [ellipsis, setEllipsis] = useState(false);
+
+  const [editData, setEditData] = useState("");
+  const [favCheck, setFavCheck] = useState(false);
+
+  const headers = {
+    "Content-Type": "application/json",
+    "X-Request-Id": uuidv4(),
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const onChange = (checked) => {
+    console.log(`switch to ${checked}`);
+    setFavCheck(checked);
+  };
 
   const handleDelete = (id) => {
     myApi
@@ -27,10 +52,24 @@ function ProjectItem({ ele }) {
         dispatch(deleteProject(id));
       });
   };
+  const handleUpdate = (projectId) => {
+    myApi
+      .post(
+        `https://api.todoist.com/rest/v2/projects/${projectId}`,
+        { name: editData, is_favorite: favCheck },
+        headers
+      )
+      .then((data) => {
+        console.log(data);
+        let newId = data.id;
+        dispatch(editProject({ newId, data }));
+      })
+      .catch((err) => console.log(err));
+  };
 
   const content = (
     <div className="popover" style={{ lineHeight: "3" }}>
-      <p>
+      <p onClick={showModal}>
         <EditOutlined />
         Edit
       </p>
@@ -61,6 +100,33 @@ function ProjectItem({ ele }) {
           <img id="social" className="list-block-item" src={social} alt="" />{" "}
           <li className="list-block-item-2">{ele.name}</li>
         </Link>
+        <Modal
+          title={
+            <div style={{ borderBottom: "1px solid #dbd6d6" }}>
+              Edit Project
+            </div>
+          }
+          open={isModalOpen}
+          onOk={() => {
+            handleOk();
+            handleUpdate(ele.id);
+          }}
+          onCancel={handleCancel}
+        >
+          <p style={{ lineHeight: "3" }}>
+            Name:{" "}
+            <input
+              type="text"
+              placeholder="new title"
+              value={editData}
+              onChange={(e) => {
+                setEditData(e.target.value);
+              }}
+            />{" "}
+            <br />
+            Favorite: <Switch onChange={onChange} />
+          </p>
+        </Modal>
       </div>
       <div
         className="ellipsis"

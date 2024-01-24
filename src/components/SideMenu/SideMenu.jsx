@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import ProjectItem from "../ProjectSection/ProjectItem.jsx";
 import myApi from "../../api/myapi.js";
 import { Link } from "react-router-dom";
-import { Modal, Switch } from "antd";
+import { Modal, Switch, Spin } from "antd";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { displayProject, createProject } from "../../feature/projectSlice.js";
@@ -14,7 +14,6 @@ import {
   RightOutlined,
   ProfileFilled,
   DownOutlined,
-  
 } from "@ant-design/icons";
 
 function SideMenu() {
@@ -27,10 +26,7 @@ function SideMenu() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [input, setInput] = useState("");
-  
-  const requestData = {
-    name: input,
-  };
+  const [check, setCheck] = useState(false);
 
   const headers = {
     "Content-Type": "application/json",
@@ -60,15 +56,21 @@ function SideMenu() {
   };
   const onChange = (checked) => {
     console.log(`switch to ${checked}`);
+    setCheck(checked);
   };
 
   const createNewProject = () => {
     setLoading(true);
     myApi
-      .post(`https://api.todoist.com/rest/v2/projects`, requestData, headers)
+      .post(
+        `https://api.todoist.com/rest/v2/projects`,
+        { name: input, is_favorite: check },
+        headers
+      )
       .then((data) => {
         dispatch(createProject(data));
         setLoading(false);
+        setInput("");
       })
       .catch((err) => console.log(err));
   };
@@ -110,7 +112,7 @@ function SideMenu() {
               setInput(e.target.value);
             }}
           />
-          <Switch defaultChecked onChange={onChange} />
+          <Switch onChange={onChange} />
         </p>
       </Modal>
       <div className="project-wrapper">
@@ -151,11 +153,9 @@ function SideMenu() {
       <div style={{ marginTop: "20px" }}>
         <ul className="list-item-container">
           {loading ? (
-            <div style={{ fontSize: "0.6rem", color: "gray" }}>Loading...</div>
+            <Spin />
           ) : showProject ? (
-            projectData.map((ele) => (
-              <ProjectItem key={ele.id} ele={ele}/>
-            ))
+            projectData.map((ele) => <ProjectItem key={ele.id} ele={ele} />)
           ) : null}
         </ul>
       </div>
