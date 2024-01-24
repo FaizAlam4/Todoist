@@ -2,7 +2,7 @@
     cursor: pointer;
 }
 
-.fav-block{
+.fav-block {
     color: black;
 }
 
@@ -24,11 +24,6 @@
     cursor: pointer;
 }
 
-.ellipsis:hover {
-
-    color: red;
-
-}
 
 .fav-block {
     display: flex;
@@ -38,5 +33,3 @@
     text-decoration: none;
     color: inherit;
 }
-
-

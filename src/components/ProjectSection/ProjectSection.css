@@ -1,0 +1,12 @@
+.section-wrap{
+    text-align: left;
+    width: 70%;
+    margin: auto;
+}
+.btn-section{
+    background-color: white;
+    font-size: 1rem;
+    padding-right: 10px;
+    color: rgb(240, 85, 2);
+    cursor: pointer;
+}

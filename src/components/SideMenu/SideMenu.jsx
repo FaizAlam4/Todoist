@@ -22,13 +22,12 @@ import { deleteProject, editProject } from "../../feature/projectSlice.js";
 function SideMenu() {
   const dispatch = useDispatch();
 
-  const { projectData } = useSelector((state) => state.project);
+  const { projectData, loading } = useSelector((state) => state.project);
 
   const [show, setShow] = useState(false);
   const [showProject, setShowProject] = useState(false);
   const [showFavorite, setShowFavorite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [input, setInput] = useState("");
   const [check, setCheck] = useState(false);
 
@@ -42,7 +41,6 @@ function SideMenu() {
       .get(`https://api.todoist.com/rest/v2/projects`)
       .then((data) => {
         dispatch(displayProject(data));
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -64,7 +62,6 @@ function SideMenu() {
   };
 
   const createNewProject = () => {
-    setLoading(true);
     myApi
       .post(
         `https://api.todoist.com/rest/v2/projects`,
@@ -73,12 +70,10 @@ function SideMenu() {
       )
       .then((data) => {
         dispatch(createProject(data));
-        setLoading(false);
         setInput("");
       })
       .catch((err) => console.log(err));
   };
-
 
   const handleDelete = (id) => {
     myApi
@@ -88,7 +83,7 @@ function SideMenu() {
         dispatch(deleteProject(id));
       });
   };
-  const handleUpdate = (projectId,newName,status) => {
+  const handleUpdate = (projectId, newName, status) => {
     myApi
       .post(
         `https://api.todoist.com/rest/v2/projects/${projectId}`,
@@ -125,7 +120,7 @@ function SideMenu() {
         }}
         onCancel={handleCancel}
       >
-        <p style={{ lineHeight: "3",textAlign:'left' }}>
+        <p style={{ lineHeight: "3", textAlign: "left" }}>
           Name
           <br />
           <input
@@ -146,7 +141,7 @@ function SideMenu() {
         </p>
       </Modal>
       <div className="project-wrapper">
-        <Link style={{ color: "black" }} to={"/project"}>
+        <Link style={{ color: "black" }} to={"/"}>
           <div style={{ fontWeight: "bold", fontSize: "0.9rem" }}>
             {" "}
             <ProfileFilled style={{ width: "30px" }} /> My Projects
@@ -185,7 +180,14 @@ function SideMenu() {
           {loading ? (
             <Spin />
           ) : showProject ? (
-            projectData.map((ele) => <ProjectItem key={ele.id} ele={ele} handleDelete={handleDelete} handleUpdate={handleUpdate} />)
+            projectData.map((ele) => (
+              <ProjectItem
+                key={ele.id}
+                ele={ele}
+                handleDelete={handleDelete}
+                handleUpdate={handleUpdate}
+              />
+            ))
           ) : null}
         </ul>
       </div>
@@ -211,7 +213,13 @@ function SideMenu() {
           <div className="fav-container">
             {showFavorite
               ? projectData.map((ele) => {
-                  return ele.is_favorite ? <FavoriteItem ele={ele} handleDelete={handleDelete} handleUpdate={handleUpdate} /> : null;
+                  return ele.is_favorite ? (
+                    <FavoriteItem
+                      ele={ele}
+                      handleDelete={handleDelete}
+                      handleUpdate={handleUpdate}
+                    />
+                  ) : null;
                 })
               : null}
           </div>

@@ -20,12 +20,6 @@
     cursor: pointer;
 }
 
-.ellipsis:hover {
-
-    color: red;
-
-}
-
 .list-block {
     display: flex;
     flex-flow: row nowrap;

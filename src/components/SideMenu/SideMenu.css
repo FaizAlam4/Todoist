@@ -3,11 +3,14 @@
     overflow: scroll;
     padding: 10px;
     line-height: 1;
-    background-color: #fcfcfc;
+    background-color: #faf8f7;
+    
 
 }
 
-
+.side-bar::-webkit-scrollbar{
+    width: 10px;
+}
 .project-wrapper {
     display: flex;
     flex-flow: row nowrap;
@@ -47,7 +50,7 @@
 
 .fav-container{
    
-    padding-top: 30px;
+    padding-top: 20px;
     line-height: 2;
     
     list-style: none;

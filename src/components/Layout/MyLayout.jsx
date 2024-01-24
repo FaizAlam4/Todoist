@@ -5,6 +5,7 @@ import ProjectSection from "../ProjectSection/ProjectSection.jsx";
 import ProjectHome from "../ProjectSection/ProjectHome.jsx";
 import SideMenu from "../SideMenu/SideMenu.jsx";
 import { Routes, Route } from "react-router-dom";
+import NavigationTwo from "../Navigation/NavigationTwo.jsx";
 
 const headerStyle = {
   textAlign: "center",
@@ -44,7 +45,12 @@ function MyLayout() {
       </Sider>
       <Layout>
         <Header style={headerStyle}>
-          <Navigation />
+          <Routes>
+            <Route path={'/'} element={<Navigation/>}></Route>
+            <Route path={'/project'} element={<Navigation/>}></Route>
+            <Route path={'project/:id'} element={<NavigationTwo/>}></Route>
+          </Routes>
+        
         </Header>
         <Content style={contentStyle}>
           <Routes>

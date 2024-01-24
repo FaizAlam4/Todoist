@@ -1,9 +1,12 @@
-import { ProfileFilled, SearchOutlined } from "@ant-design/icons";
-
-
+import { ProfileFilled, SearchOutlined, StarFilled } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { SyncOutlined } from "@ant-design/icons";
 import "./ProjectHome.css";
-function ProjectHome() {
+import { useSelector } from "react-redux";
+import social from "../../assets/social.png";
 
+function ProjectHome() {
+  const { projectData, loading } = useSelector((state) => state.project);
   return (
     <div>
       <div className="home-wrapper">
@@ -62,8 +65,81 @@ function ProjectHome() {
             </option>
           </select>
         </div>
+        {projectData.length > 3 ? (
+          <div>
+            <span style={{ fontWeight: "bold" }}>
+              {projectData.length - 1} projects
+            </span>
+            <div className="detail">
+              <div
+                style={{
+                  color: "orange",
+                  fontSize: "1.1rem",
+                  marginTop: "10px",
+                }}
+              >
+                <StarFilled />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexFlow: "column nowrap",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  lineHeight: 2,
+                }}
+              >
+                <div style={{ width: "100%", fontWeight: "bold" }}>
+                  Need more projects?
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.72rem",
+                    color: "grey",
+                    marginRight: "287px",
+                  }}
+                >
+                  There is no stopping you! Power up your productivity with the
+                  Pro plan.
+                </div>
+              </div>
+              <div>
+                <button className="upgrade">Upgrade</button>
+              </div>
+            </div>
+          </div>
+        ) : null}
 
-        <div>{}</div>
+        <div>
+          {loading ? (
+            <SyncOutlined />
+          ) : (
+            projectData.map((ele) =>
+              ele.name != "Inbox" ? (
+                <Link key={ele.id} to={`project/${ele.id}`}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      lineHeight: "3.5",
+                      color: "black",
+                    }}
+                    className="itm"
+                  >
+                    {" "}
+                    <div>
+                      <img style={{ width: "15px" }} src={social} alt="" />
+                    </div>{" "}
+                    <div style={{ paddingLeft: "10px", paddingBottom: "5px" }}>
+                      {" "}
+                      {ele.name}
+                    </div>
+                  </div>
+                </Link>
+              ) : null
+            )
+          )}
+        </div>
       </div>
     </div>
   );

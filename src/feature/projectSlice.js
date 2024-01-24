@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   projectData: [],
+  loading: true,
 };
 
 export const projectSlice = createSlice({
@@ -11,6 +12,7 @@ export const projectSlice = createSlice({
       return {
         ...state,
         projectData: [...action.payload],
+        loading: false,
       };
     },
     createProject: (state, action) => {

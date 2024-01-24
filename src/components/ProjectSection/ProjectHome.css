@@ -13,3 +13,28 @@
     width: 100px;
     height: 40px;
 }
+
+.upgrade{
+    background-color: rgb(206, 16, 16);
+    font-weight: bold;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+.detail{
+  
+    display:flex;
+    flex-flow:row wrap;
+    justify-content: space-between;
+    padding: 8px 20px;
+    background-color: #fffaf4;
+    border: 1px solid #fae8d6;
+    border-radius: 5px;
+}
+
+.itm:hover{
+    background-color: #f6efee;
+    border-radius: 10px;
+  
+}

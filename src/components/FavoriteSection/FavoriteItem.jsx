@@ -101,17 +101,20 @@ function FavoriteItem({ ele, handleDelete, handleUpdate }) {
           </p>
         </Modal>
       </div>
-      <div
-        className="ellipsis"
-        style={{ visibility: ellipsis ? "visible" : "hidden" }}
-      >
+      <div style={{ visibility: ellipsis ? "visible" : "hidden" }}>
         <Popover
           placement="right"
           content={content}
           title="Options"
           trigger="hover"
         >
-          <Button style={{ outline: "none", border: "none" }}>
+          <Button
+            style={{
+              outline: "none",
+              border: "none",
+              backgroundColor: "inherit",
+            }}
+          >
             <EllipsisOutlined />
           </Button>
         </Popover>
