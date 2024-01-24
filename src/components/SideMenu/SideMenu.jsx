@@ -17,6 +17,7 @@ import {
   DownOutlined,
   HeartFilled,
 } from "@ant-design/icons";
+import { deleteProject, editProject } from "../../feature/projectSlice.js";
 
 function SideMenu() {
   const dispatch = useDispatch();
@@ -78,6 +79,29 @@ function SideMenu() {
       .catch((err) => console.log(err));
   };
 
+
+  const handleDelete = (id) => {
+    myApi
+      .delete(`https://api.todoist.com/rest/v2/projects/${id}`)
+      .then((data) => {
+        console.log("Deleted successfully!", data);
+        dispatch(deleteProject(id));
+      });
+  };
+  const handleUpdate = (projectId,newName,status) => {
+    myApi
+      .post(
+        `https://api.todoist.com/rest/v2/projects/${projectId}`,
+        { name: newName, is_favorite: status },
+        headers
+      )
+      .then((data) => {
+        console.log(data);
+        let newId = data.id;
+        dispatch(editProject({ newId, data }));
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <div
       id="main"
@@ -161,7 +185,7 @@ function SideMenu() {
           {loading ? (
             <Spin />
           ) : showProject ? (
-            projectData.map((ele) => <ProjectItem key={ele.id} ele={ele} />)
+            projectData.map((ele) => <ProjectItem key={ele.id} ele={ele} handleDelete={handleDelete} handleUpdate={handleUpdate} />)
           ) : null}
         </ul>
       </div>
@@ -187,7 +211,7 @@ function SideMenu() {
           <div className="fav-container">
             {showFavorite
               ? projectData.map((ele) => {
-                  return ele.is_favorite ? <FavoriteItem ele={ele} /> : null;
+                  return ele.is_favorite ? <FavoriteItem ele={ele} handleDelete={handleDelete} handleUpdate={handleUpdate} /> : null;
                 })
               : null}
           </div>

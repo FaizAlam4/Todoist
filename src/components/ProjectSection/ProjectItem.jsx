@@ -11,23 +11,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./ProjectItem.css";
 import { Popover, Button, Modal, Switch } from "antd";
-import myApi from "../../api/myapi.js";
-import { v4 as uuidv4 } from "uuid";
-import { useDispatch } from "react-redux";
-import { deleteProject, editProject } from "../../feature/projectSlice.js";
-
-function ProjectItem({ ele }) {
-  const dispatch = useDispatch();
-
+function ProjectItem({ ele, handleDelete, handleUpdate }) {
   const [ellipsis, setEllipsis] = useState(false);
 
   const [editData, setEditData] = useState(ele.name);
   const [favCheck, setFavCheck] = useState(false);
-
-  const headers = {
-    "Content-Type": "application/json",
-    "X-Request-Id": uuidv4(),
-  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -45,67 +33,30 @@ function ProjectItem({ ele }) {
     setFavCheck(checked);
   };
 
-  const handleDelete = (id) => {
-    myApi
-      .delete(`https://api.todoist.com/rest/v2/projects/${id}`)
-      .then((data) => {
-        console.log("Deleted successfully!", data);
-        dispatch(deleteProject(id));
-      });
-  };
-  const handleUpdate = (projectId) => {
-    myApi
-      .post(
-        `https://api.todoist.com/rest/v2/projects/${projectId}`,
-        { name: editData, is_favorite: favCheck },
-        headers
-      )
-      .then((data) => {
-        console.log(data);
-        let newId = data.id;
-        dispatch(editProject({ newId, data }));
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const addFavorite = (projectId) => {
-  
-      myApi
-        .post(
-          `https://api.todoist.com/rest/v2/projects/${projectId}`,
-          { is_favorite: true },
-          headers
-        )
-        .then((data) => {
-          console.log(data);
-          let newId = data.id;
-          dispatch(editProject({ newId, data }));
-        })
-        .catch((err) => console.log(err));
-    
-  };
-  
-
   const content = (
     <div className="popover" style={{ lineHeight: "3" }}>
       <p onClick={showModal}>
         <EditOutlined />
         Edit
       </p>
-     
-        {ele.is_favorite ? (
-          <p style={{cursor:'not-allowed', color:'grey'}}>
-            <HeartFilled />
-            Already in Favorite
-          </p>
-        ) : (
-          <p onClick={()=>{addFavorite(ele.id)}}>
-            {" "}
-            <HeartOutlined />
-            Add to favourites
-          </p>
-        )}
-     
+
+      {ele.is_favorite ? (
+        <p style={{ cursor: "not-allowed", color: "grey" }}>
+          <HeartFilled />
+          Already in Favorite
+        </p>
+      ) : (
+        <p
+          onClick={() => {
+            handleUpdate(ele.id, ele.name, true);
+          }}
+        >
+          {" "}
+          <HeartOutlined />
+          Add to favourites
+        </p>
+      )}
+
       <p
         onClick={() => {
           handleDelete(ele.id);
@@ -140,7 +91,7 @@ function ProjectItem({ ele }) {
           open={isModalOpen}
           onOk={() => {
             handleOk();
-            handleUpdate(ele.id);
+            handleUpdate(ele.id, editData, favCheck);
           }}
           onCancel={handleCancel}
         >
