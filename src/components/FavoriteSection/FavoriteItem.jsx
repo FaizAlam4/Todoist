@@ -2,8 +2,8 @@
 import {
   EllipsisOutlined,
   EditOutlined,
-  HeartOutlined,
   DeleteOutlined,
+  HeartFilled,
 } from "@ant-design/icons";
 import social from "../../assets/social.png";
 import { useState } from "react";
@@ -12,7 +12,7 @@ import { Popover, Button, Modal, Switch } from "antd";
 import myApi from "../../api/myapi.js";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
-import { deleteProject, editProject } from "../../feature/projectSlice";
+import { deleteProject, editProject } from "../../feature/projectSlice.js";
 import "./FavoriteItem.css";
 
 function FavoriteItem({ ele }) {
@@ -66,6 +66,20 @@ function FavoriteItem({ ele }) {
       })
       .catch((err) => console.log(err));
   };
+  const removeFavorite = (projectId) => {
+    myApi
+      .post(
+        `https://api.todoist.com/rest/v2/projects/${projectId}`,
+        { name: ele.name, is_favorite: false },
+        headers
+      )
+      .then((data) => {
+        console.log(data);
+        let newId = data.id;
+        dispatch(editProject({ newId, data }));
+      })
+      .catch((err) => console.log(err));
+  };
 
   const content = (
     <div className="popover" style={{ lineHeight: "3" }}>
@@ -73,9 +87,13 @@ function FavoriteItem({ ele }) {
         <EditOutlined />
         Edit
       </p>
-      <p>
-        <HeartOutlined />
-        Add to favourites
+      <p
+        onClick={() => {
+          removeFavorite(ele.id);
+        }}
+      >
+        <HeartFilled />
+        Remove from favourites
       </p>
       <p
         onClick={() => {
@@ -114,7 +132,7 @@ function FavoriteItem({ ele }) {
           }}
           onCancel={handleCancel}
         >
-          <p style={{ lineHeight: "3",textAlign:'left' }}>
+          <p style={{ lineHeight: "3", textAlign: "left" }}>
             Name:{" "}
             <input
               type="text"
