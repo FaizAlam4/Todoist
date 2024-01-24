@@ -8,14 +8,14 @@ import {
 import social from "../../assets/social.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import "./ProjectItem.css";
 import { Popover, Button, Modal, Switch } from "antd";
 import myApi from "../../api/myapi.js";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 import { deleteProject, editProject } from "../../feature/projectSlice";
+import "./FavoriteItem.css";
 
-function ProjectItem({ ele }) {
+function FavoriteItem({ ele }) {
   const dispatch = useDispatch();
 
   const [ellipsis, setEllipsis] = useState(false);
@@ -87,22 +87,21 @@ function ProjectItem({ ele }) {
       </p>
     </div>
   );
-
   return (
     <div
-    id='app'
-      className="list-block-one"
+      id="app2"
+      className="fav-block-one"
       key={ele.id}
       onMouseEnter={() => setEllipsis(true)}
       onMouseLeave={() => setEllipsis(false)}
     >
-      <div className="list-block">
-        <Link to={`/project/${ele.id}`} className="list-block">
-          <img id="social" className="list-block-item" src={social} alt="" />{" "}
-          <li className="list-block-item-2">{ele.name}</li>
+      <div className="fav-block">
+        <Link to={`/project/${ele.id}`} className="fav-block">
+          <img id="social" src={social} alt="" />{" "}
+          <li className="fav-block-item-2">{ele.name}</li>
         </Link>
         <Modal
-         getContainer={document.getElementById('app')}
+          getContainer={document.getElementById("app2")}
           title={
             <div style={{ borderBottom: "1px solid #dbd6d6" }}>
               Edit Project
@@ -126,7 +125,7 @@ function ProjectItem({ ele }) {
               }}
               style={{ fontSize: "0.9rem" }}
               autoFocus
-            />{" "}
+            />
             <br />
             Favorite: <Switch onChange={onChange} />
           </p>
@@ -151,4 +150,4 @@ function ProjectItem({ ele }) {
   );
 }
 
-export default ProjectItem;
+export default FavoriteItem;

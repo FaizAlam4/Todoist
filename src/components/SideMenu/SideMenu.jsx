@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 
 import ProjectItem from "../ProjectSection/ProjectItem.jsx";
+import FavoriteItem from "../FavoriteSection/FavoriteItem.jsx";
 import myApi from "../../api/myapi.js";
 import { Link } from "react-router-dom";
 import { Modal, Switch, Spin } from "antd";
@@ -14,6 +15,7 @@ import {
   RightOutlined,
   ProfileFilled,
   DownOutlined,
+  HeartFilled,
 } from "@ant-design/icons";
 
 function SideMenu() {
@@ -23,6 +25,7 @@ function SideMenu() {
 
   const [show, setShow] = useState(false);
   const [showProject, setShowProject] = useState(false);
+  const [showFavorite, setShowFavorite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [input, setInput] = useState("");
@@ -77,6 +80,7 @@ function SideMenu() {
 
   return (
     <div
+      id="main"
       className="side-bar"
       onMouseEnter={() => {
         setShow(true);
@@ -86,6 +90,7 @@ function SideMenu() {
       }}
     >
       <Modal
+        getContainer={document.getElementById("main")}
         title={
           <div style={{ borderBottom: "1px solid #dbd6d6" }}>Add Project</div>
         }
@@ -96,7 +101,7 @@ function SideMenu() {
         }}
         onCancel={handleCancel}
       >
-        <p style={{ lineHeight: "3" }}>
+        <p style={{ lineHeight: "3",textAlign:'left' }}>
           Name
           <br />
           <input
@@ -108,6 +113,7 @@ function SideMenu() {
               padding: "7px",
               borderRadius: "7px",
             }}
+            autoFocus
             onChange={(e) => {
               setInput(e.target.value);
             }}
@@ -159,6 +165,34 @@ function SideMenu() {
           ) : null}
         </ul>
       </div>
+      {loading ? null : (
+        <>
+          <div className="project-wrapper-2">
+            <div style={{ marginLeft: "17px" }}>
+              <HeartFilled />
+            </div>
+            <div style={{ paddingRight: "80px" }}>Favorites</div>
+            <div
+              onClick={() => {
+                setShowFavorite((prev) => !prev);
+              }}
+              style={{
+                visibility: show ? "visible" : "hidden",
+                marginRight: "20px",
+              }}
+            >
+              {showFavorite ? <DownOutlined /> : <RightOutlined />}
+            </div>
+          </div>
+          <div className="fav-container">
+            {showFavorite
+              ? projectData.map((ele) => {
+                  return ele.is_favorite ? <FavoriteItem ele={ele} /> : null;
+                })
+              : null}
+          </div>
+        </>
+      )}
     </div>
   );
 }

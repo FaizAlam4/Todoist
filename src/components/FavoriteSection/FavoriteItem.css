@@ -2,18 +2,22 @@
     cursor: pointer;
 }
 
-.list-block:hover {
+.fav-block{
+    color: black;
+}
+
+.fav-block:hover {
     color: red;
 }
 
-.list-block-item-2 {
+.fav-block-item-2 {
     line-height: 1;
     text-align: left;
     margin-left: 15px;
     list-style: none;
 }
 
-.list-block-one {
+.fav-block-one {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
@@ -26,7 +30,7 @@
 
 }
 
-.list-block {
+.fav-block {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -34,3 +38,5 @@
     text-decoration: none;
     color: inherit;
 }
+
+
