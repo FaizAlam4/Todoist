@@ -215,6 +215,7 @@ function SideMenu() {
               ? projectData.map((ele) => {
                   return ele.is_favorite ? (
                     <FavoriteItem
+                      key={ele.id}
                       ele={ele}
                       handleDelete={handleDelete}
                       handleUpdate={handleUpdate}
