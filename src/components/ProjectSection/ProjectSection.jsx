@@ -24,7 +24,7 @@ function ProjectSection() {
   const [showBox, setShowBox] = useState(false);
   const [taskName, setTaskName] = useState("");
   const [description, setDescription] = useState("");
-  console.log(taskName,description)
+  console.log(taskName, description);
   const headers = {
     "Content-Type": "application/json",
     "X-Request-Id": uuidv4(),
@@ -47,7 +47,6 @@ function ProjectSection() {
   }, [id]);
 
   const addTask = () => {
-    setLoad(true)
     MyApi.post(
       `https://api.todoist.com/rest/v2/tasks?project_id=${id}`,
       { content: taskName, description: description },
@@ -56,8 +55,6 @@ function ProjectSection() {
       dispatch(createTask({ id: id, data: data }));
       setTaskName("");
       setDescription("");
-      setLoad(false)
-     
     });
   };
 
@@ -68,7 +65,7 @@ function ProjectSection() {
           <LoadingOutlined />
         </div>
       ) : (
-        <>
+        <div className="outer-div">
           <div className="section-wrap">
             <span
               style={{
@@ -79,55 +76,75 @@ function ProjectSection() {
             >
               {myProject && myProject.name}
             </span>
-            <div style={{ marginTop: "20px" }}>
-              <span style={{ border: "none" }}>
-                {showBox ? (
-                  <div>
-                    <div
-                      style={{
-                        border: "1px solid #d3cbcb",
-                        borderRadius: "10px",
-                        padding: "10px",
+          </div>
+          {load ? (
+            <div>
+              <Spin />
+            </div>
+          ) : taskData && taskData.length > 0 ? (
+            <div style={{marginTop:'20px'}}>
+              {taskData.map((ele) => (
+                <TaskItem key={ele.id} taskItem={ele} />
+              ))}
+              <div
+            style={{
+            
+              width: "70%",
+              margin: "auto",
+              marginBottom: "30px",
+            }}
+          >
+            <span style={{ border: "none" }}>
+              {showBox ? (
+                <div>
+                  <div
+                    style={{
+                      border: "1px solid #d3cbcb",
+                      borderRadius: "10px",
+                      padding: "10px",
+                    }}
+                  >
+                    <input
+                      style={{ width: "100%" }}
+                      placeholder="Task name"
+                      type="text"
+                      value={taskName}
+                      onChange={(e) => setTaskName(e.target.value)}
+                      autoFocus
+                    />
+                    <input
+                      style={{ width: "100%" }}
+                      type="text"
+                      placeholder="Description"
+                      value={description}
+                      onChange={(e) => {
+                        setDescription(e.target.value);
                       }}
-                    >
-                      <input
-                        style={{ width: "100%" }}
-                        placeholder="Task name"
-                        type="text"
-                        value={taskName}
-                        onChange={(e) => setTaskName(e.target.value)}
-                      />
-                      <input
-                        style={{ width: "100%" }}
-                        type="text"
-                        placeholder="Description"
-                        value={description}
-                        onChange={(e) => {
-                          setDescription(e.target.value);
-                        }}
-                      />
+                      autoFocus
+                    />
 
-                      <div className="add-task-btn">
-                        <button
-                          onClick={() => {
-                            setShowBox(false);
-                          }}
-                          style={{ display: "block" }}
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          style={{ display: "block" }}
-                          onClick={() => {
-                            addTask();
-                          }}
-                        >
-                          Add Task
-                        </button>
-                      </div>
+                    <div className="add-task-btn">
+                      <button
+                        onClick={() => {
+                          setShowBox(false);
+                        }}
+                        style={{ display: "block" }}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        style={{ display: "block" }}
+                        onClick={() => {
+                          addTask();
+                        }}
+                      >
+                        Add Task
+                      </button>
                     </div>
                   </div>
-                ) : (
+                </div>
+              ) : (
+                <div style={{ textAlign: "left",marginTop:'10px' }}>
                   <button
                     className="btn-section"
                     onClick={() => {
@@ -145,18 +162,95 @@ function ProjectSection() {
                       Add task
                     </span>
                   </button>
-                )}
-              </span>
-            </div>
+                </div>
+              )}
+            </span>
           </div>
-          {load ? (
-            <div>
-              <Spin />
             </div>
-          ) : taskData && taskData.length > 0 ? (
-            taskData.map((ele) => <TaskItem key={ele.id} taskItem={ele} />)
           ) : (
+
             <div>
+<div
+            style={{
+              marginTop: "0px",
+              width: "70%",
+              margin: "auto",
+              marginBottom: "30px",
+            }}
+          >
+            <span style={{ border: "none" }}>
+              {showBox ? (
+                <div>
+                  <div
+                    style={{
+                      border: "1px solid #d3cbcb",
+                      borderRadius: "10px",
+                      padding: "10px",
+                    }}
+                  >
+                    <input
+                      style={{ width: "100%" }}
+                      placeholder="Task name"
+                      type="text"
+                      value={taskName}
+                      onChange={(e) => setTaskName(e.target.value)}
+                      autoFocus
+                    />
+                    <input
+                      style={{ width: "100%" }}
+                      type="text"
+                      placeholder="Description"
+                      value={description}
+                      onChange={(e) => {
+                        setDescription(e.target.value);
+                      }}
+                      autoFocus
+                    />
+
+                    <div className="add-task-btn">
+                      <button
+                        onClick={() => {
+                          setShowBox(false);
+                        }}
+                        style={{ display: "block" }}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        style={{ display: "block" }}
+                        onClick={() => {
+                          addTask();
+                        }}
+                      >
+                        Add Task
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ textAlign: "left",marginTop:'10px' }}>
+                  <button
+                    className="btn-section"
+                    onClick={() => {
+                      setShowBox(true);
+                    }}
+                  >
+                    <PlusOutlined />
+                    <span
+                      style={{
+                        color: "grey",
+                        fontSize: "0.9rem",
+                        paddingLeft: "5px",
+                      }}
+                    >
+                      Add task
+                    </span>
+                  </button>
+                </div>
+              )}
+            </span>
+          </div>
+
               <div style={{ marginTop: "40px" }}>
                 <img
                   src="https://todoist.b-cdn.net/assets/images/33fe5f2817362251f0375b57d481e7d5.png"
@@ -174,7 +268,8 @@ function ProjectSection() {
               </div>
             </div>
           )}
-        </>
+          
+        </div>
       )}
     </div>
   );
