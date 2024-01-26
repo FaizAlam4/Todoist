@@ -4,28 +4,31 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import "./ProjectSection.css";
-import {v4 as uuidv4} from 'uuid'
+import { v4 as uuidv4 } from "uuid";
 import { Spin } from "antd";
 import MyApi from "../../api/myapi.js";
 import TaskItem from "../TaskSection/TaskItem.jsx";
-import { displayTask,createTask } from "../../feature/taskSlice";
+import { displayTask, createTask } from "../../feature/taskSlice";
 import { useDispatch } from "react-redux";
 
 function ProjectSection() {
   const dispatch = useDispatch();
 
   const { id } = useParams();
+  const { taskData } = useSelector((state) => {
+    return { taskData: state.task.taskData[id] || [] };
+  });
   const { projectData, loading } = useSelector((state) => state.project);
   const [myProject, setMyProject] = useState(null);
   const [load, setLoad] = useState(true);
-  const [taskData, setTaskData] = useState([]);
   const [showBox, setShowBox] = useState(false);
-  const [taskName,setTaskName]=useState('');
-  const [description,setDescription]=useState('')
-  const headers={
-    "Content-Type":'application/json',
-    "X-Request-Id":uuidv4()
-  }
+  const [taskName, setTaskName] = useState("");
+  const [description, setDescription] = useState("");
+  console.log(taskName,description)
+  const headers = {
+    "Content-Type": "application/json",
+    "X-Request-Id": uuidv4(),
+  };
 
   useEffect(() => {
     let chosenProject = projectData.filter((ele) => ele.id == id);
@@ -37,19 +40,25 @@ function ProjectSection() {
     MyApi.get(`https://api.todoist.com/rest/v2/tasks?project_id=${id}`)
       .then((data) => {
         console.log(data);
-        dispatch(displayTask(id, data));
+        dispatch(displayTask({ id: id, data: data }));
         setLoad(false);
-        setTaskData(data);
       })
       .catch((err) => console.log(err));
   }, [id]);
 
   const addTask = () => {
-    MyApi.post(`https://api.todoist.com/rest/v2/tasks?project_id=${id}`,{content:taskData,description:description},headers).then((data)=>{
-dispatch(createTask(id,data))
-setTaskName('')
-setDescription
-    })
+    setLoad(true)
+    MyApi.post(
+      `https://api.todoist.com/rest/v2/tasks?project_id=${id}`,
+      { content: taskName, description: description },
+      headers
+    ).then((data) => {
+      dispatch(createTask({ id: id, data: data }));
+      setTaskName("");
+      setDescription("");
+      setLoad(false)
+     
+    });
   };
 
   return (
@@ -70,7 +79,7 @@ setDescription
             >
               {myProject && myProject.name}
             </span>
-            <p style={{ marginTop: "20px" }}>
+            <div style={{ marginTop: "20px" }}>
               <span style={{ border: "none" }}>
                 {showBox ? (
                   <div>
@@ -86,14 +95,16 @@ setDescription
                         placeholder="Task name"
                         type="text"
                         value={taskName}
-                        onChange={(e)=>setTaskName(e.target.value)}
+                        onChange={(e) => setTaskName(e.target.value)}
                       />
                       <input
                         style={{ width: "100%" }}
                         type="text"
                         placeholder="Description"
                         value={description}
-                        onChange={(e)=>{setDescription(e.target.value)}}
+                        onChange={(e) => {
+                          setDescription(e.target.value);
+                        }}
                       />
 
                       <div className="add-task-btn">
@@ -105,7 +116,14 @@ setDescription
                         >
                           Cancel
                         </button>
-                        <button style={{ display: "block" }} onClick={()=>{addTask()}}>Add Task</button>
+                        <button
+                          style={{ display: "block" }}
+                          onClick={() => {
+                            addTask();
+                          }}
+                        >
+                          Add Task
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -129,7 +147,7 @@ setDescription
                   </button>
                 )}
               </span>
-            </p>
+            </div>
           </div>
           {load ? (
             <div>
