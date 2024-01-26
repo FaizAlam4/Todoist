@@ -1,9 +1,20 @@
 /* eslint-disable react/prop-types */
+import "./TaskItem.css";
 
-function TaskItem({taskItem}) {
+function TaskItem({ taskItem }) {
   return (
-    <div>{taskItem.content}</div>
-  )
+    <div>
+      <div className="task-wrap">
+        <button className="task-btn">
+          <img src={null} alt="" />
+        </button>{" "}
+        <span style={{ display: "block", padding: "10px" }}>
+          {" "}
+          {taskItem.content}{" "}
+        </span>
+      </div>
+    </div>
+  );
 }
 
-export default TaskItem
+export default TaskItem;

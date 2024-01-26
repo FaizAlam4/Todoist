@@ -6,6 +6,7 @@ import FavoriteItem from "../FavoriteSection/FavoriteItem.jsx";
 import myApi from "../../api/myapi.js";
 import { Link } from "react-router-dom";
 import { Modal, Switch, Spin } from "antd";
+import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { displayProject, createProject } from "../../feature/projectSlice.js";
@@ -20,6 +21,7 @@ import {
 import { deleteProject, editProject } from "../../feature/projectSlice.js";
 
 function SideMenu() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { projectData, loading } = useSelector((state) => state.project);
@@ -62,17 +64,19 @@ function SideMenu() {
   };
 
   const createNewProject = () => {
-    myApi
-      .post(
-        `https://api.todoist.com/rest/v2/projects`,
-        { name: input, is_favorite: check },
-        headers
-      )
-      .then((data) => {
-        dispatch(createProject(data));
-        setInput("");
-      })
-      .catch((err) => console.log(err));
+    input.trim().length > 0
+      ? myApi
+          .post(
+            `https://api.todoist.com/rest/v2/projects`,
+            { name: input, is_favorite: check },
+            headers
+          )
+          .then((data) => {
+            dispatch(createProject(data));
+            setInput("");
+          })
+          .catch((err) => console.log(err))
+      : alert("Enter name!");
   };
 
   const handleDelete = (id) => {
@@ -81,6 +85,7 @@ function SideMenu() {
       .then((data) => {
         console.log("Deleted successfully!", data);
         dispatch(deleteProject(id));
+        navigate("/");
       });
   };
   const handleUpdate = (projectId, newName, status) => {
@@ -118,6 +123,7 @@ function SideMenu() {
           handleOk();
           createNewProject();
         }}
+        autoFocus={open}
         onCancel={handleCancel}
       >
         <p style={{ lineHeight: "3", textAlign: "left" }}>
@@ -132,7 +138,9 @@ function SideMenu() {
               padding: "7px",
               borderRadius: "7px",
             }}
-            autoFocus
+            autoFocus={open}
+            value={input}
+            required
             onChange={(e) => {
               setInput(e.target.value);
             }}

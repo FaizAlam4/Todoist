@@ -15,13 +15,14 @@ export const taskSlice = createSlice({
       };
     },
     createTask: (state, action) => {
+      const { id,data } = action.payload;
       return {
         ...state,
-        taskData: [...state.taskData, action.payload],
+        taskData: {...state.taskData, [id]:[...state.taskData[id],data]},
       };
     },
     deleteProject: (state, action) => {
-      const updatedData = state.taskDataData.filter(
+      const updatedData = state.taskData.filter(
         (ele) => ele.id != action.payload
       );
       return {

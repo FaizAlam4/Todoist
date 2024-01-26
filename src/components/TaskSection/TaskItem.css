@@ -1,0 +1,16 @@
+.task-btn{
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    background-color: white;
+    display: block;
+    border: 1px solid rgb(158, 154, 154);
+}
+.task-wrap{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+   width: 70%;
+   margin: auto;
+    align-items: center;
+}

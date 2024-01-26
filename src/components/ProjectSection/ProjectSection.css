@@ -10,3 +10,27 @@
     color: rgb(240, 85, 2);
     cursor: pointer;
 }
+
+.add-task-btn{
+    width: 100%;
+    display: flex;
+    margin: auto;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    border-top: 1px solid rgb(230, 223, 223);
+    gap: 10px;
+  
+}
+
+.add-task-btn button{
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 7px;
+    cursor: pointer;
+
+}
+.add-task-btn button:nth-child(2){
+    background-color: rgb(216, 9, 9);
+    color: white;
+}
