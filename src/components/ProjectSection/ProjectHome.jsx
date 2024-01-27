@@ -1,6 +1,6 @@
 import { ProfileFilled, SearchOutlined, StarFilled } from "@ant-design/icons";
+import { Spin } from "antd";
 import { Link } from "react-router-dom";
-import { SyncOutlined } from "@ant-design/icons";
 import "./ProjectHome.css";
 import { useSelector } from "react-redux";
 import social from "../../assets/social.png";
@@ -112,7 +112,7 @@ function ProjectHome() {
 
         <div>
           {loading ? (
-            <SyncOutlined />
+          <div style={{paddingTop:'140px',width:'10%',margin:'auto'}}><Spin /> </div>  
           ) : (
             projectData.map((ele) =>
               ele.name != "Inbox" ? (

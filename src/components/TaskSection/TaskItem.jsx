@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import "./TaskItem.css";
 import { CheckOutlined } from "@ant-design/icons";
-import { Button, Popover } from "antd";
+import { Button, Popover,Spin } from "antd";
 import { useState } from "react";
 import MyApi from "../../api/myapi.js";
 import { useDispatch } from "react-redux";
@@ -9,12 +9,14 @@ import { deleteTask } from "../../feature/taskSlice.js";
 
 function TaskItem({ taskItem, projectId }) {
   const dispatch = useDispatch();
+  const [load,setLoad]=useState(false)
 
   const removeTask = () => {
-    console.log("del");
+    setLoad(true)
     MyApi.delete(`https://api.todoist.com/rest/v2/tasks/${taskItem.id}`)
       .then(() => {
         dispatch(deleteTask({ projectId: projectId, taskItemId: taskItem.id }));
+        setLoad(false)
       })
       .catch((err) => {
         console.log(err);
@@ -23,8 +25,8 @@ function TaskItem({ taskItem, projectId }) {
 
   const content = (
     <div className="option-menu">
-      <p>
-        <button onClick={removeTask}> Delete</button>
+      <p style={{display:'flex',flexFlow:'row nowrap', justifyContent:"space-between"}}>
+        <button style={{display:'block'}} onClick={removeTask}> Delete</button> {load? <span style={{display:'block'}}><Spin/></span>: null}
       </p>
       <p>
         <button> Move</button>

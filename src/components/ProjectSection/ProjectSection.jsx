@@ -60,7 +60,7 @@ function ProjectSection() {
   return (
     <div>
       {loading ? (
-        <div style={{ fontSize: "3rem" }}>
+        <div style={{ fontSize: "3rem",marginTop:'180px' }}>
           <LoadingOutlined />
         </div>
       ) : (
@@ -77,7 +77,7 @@ function ProjectSection() {
             </span>
           </div>
           {load ? (
-            <div>
+            <div style={{marginTop:'200px'}}>
               <Spin />
             </div>
           ) : taskData && taskData.length > 0 ? (
