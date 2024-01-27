@@ -15,31 +15,31 @@ export const taskSlice = createSlice({
       };
     },
     createTask: (state, action) => {
-      const { id,data } = action.payload;
+      const { id, data } = action.payload;
       return {
         ...state,
-        taskData: {...state.taskData, [id]:[...state.taskData[id],data]},
+        taskData: { ...state.taskData, [id]: [...state.taskData[id], data] },
       };
     },
     deleteTask: (state, action) => {
-      const {projectId,taskItemId}=action.payload;
+      const { projectId, taskItemId } = action.payload;
       const updatedData = state.taskData[projectId].filter(
         (ele) => ele.id != taskItemId
       );
       return {
         ...state,
-        taskData: {...state.taskData, [projectId]:[...updatedData]},
+        taskData: { ...state.taskData, [projectId]: [...updatedData] },
       };
     },
     editTask: (state, action) => {
-      const { newId, data } = action.payload;
-      let newArr = state.taskData.map((ele) => {
-        if (ele.id == newId) return data;
+      const { projectId, taskId, taskData } = action.payload;
+      let newArr = state.taskData[projectId].map((ele) => {
+        if (ele.id == taskId) return taskData;
         else return ele;
       });
       return {
         ...state,
-        taskData: [...newArr],
+        taskData: { ...state.taskData, [projectId]: [...newArr] },
       };
     },
   },
