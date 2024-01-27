@@ -21,16 +21,17 @@ export const taskSlice = createSlice({
         taskData: {...state.taskData, [id]:[...state.taskData[id],data]},
       };
     },
-    deleteProject: (state, action) => {
-      const updatedData = state.taskData.filter(
-        (ele) => ele.id != action.payload
+    deleteTask: (state, action) => {
+      const {projectId,taskItemId}=action.payload;
+      const updatedData = state.taskData[projectId].filter(
+        (ele) => ele.id != taskItemId
       );
       return {
         ...state,
-        taskData: [...updatedData],
+        taskData: {...state.taskData, [projectId]:[...updatedData]},
       };
     },
-    editProject: (state, action) => {
+    editTask: (state, action) => {
       const { newId, data } = action.payload;
       let newArr = state.taskData.map((ele) => {
         if (ele.id == newId) return data;

@@ -1,8 +1,37 @@
 /* eslint-disable react/prop-types */
 import "./TaskItem.css";
 import { CheckOutlined } from "@ant-design/icons";
+import { Button, Popover } from "antd";
 import { useState } from "react";
-function TaskItem({ taskItem }) {
+import MyApi from "../../api/myapi.js";
+import { useDispatch } from "react-redux";
+import { deleteTask } from "../../feature/taskSlice.js";
+
+function TaskItem({ taskItem, projectId }) {
+  const dispatch = useDispatch();
+
+  const removeTask = () => {
+    console.log("del");
+    MyApi.delete(`https://api.todoist.com/rest/v2/tasks/${taskItem.id}`)
+      .then(() => {
+        dispatch(deleteTask({ projectId: projectId, taskItemId: taskItem.id }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const content = (
+    <div className="option-menu">
+      <p>
+        <button onClick={removeTask}> Delete</button>
+      </p>
+      <p>
+        <button> Move</button>
+      </p>
+    </div>
+  );
+
   const [showTick, setShowTick] = useState(false);
 
   const [showOpt, setShowOpt] = useState(false);
@@ -60,9 +89,13 @@ function TaskItem({ taskItem }) {
           {taskItem.description}
         </span>
       </div>
-      {showOpt && (
-        <div className="task-options">
-          <div>
+
+      <div
+        className="task-options"
+        style={{ visibility: showOpt ? "visible" : "hidden" }}
+      >
+        <div>
+          <button>
             <svg width="24" height="24">
               <g fill="none" fillRule="evenodd">
                 <path
@@ -75,8 +108,10 @@ function TaskItem({ taskItem }) {
                 ></path>
               </g>
             </svg>
-          </div>
-          <div>
+          </button>
+        </div>
+        <div>
+          <button>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -91,8 +126,10 @@ function TaskItem({ taskItem }) {
                 clipRule="evenodd"
               ></path>
             </svg>
-          </div>
-          <div>
+          </button>
+        </div>
+        <div>
+          <button>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -105,23 +142,32 @@ function TaskItem({ taskItem }) {
                 d="M11.707 20.793A1 1 0 0 1 10 20.086V18H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4.5l-2.793 2.793zM11 20.086L14.086 17H19a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h6v3.086z"
               ></path>
             </svg>
-          </div>
-          <div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-              <g
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                transform="translate(3 10)"
-              >
-                <circle cx="2" cy="2" r="2"></circle>
-                <circle cx="9" cy="2" r="2"></circle>
-                <circle cx="16" cy="2" r="2"></circle>
-              </g>
-            </svg>
-          </div>
+          </button>
         </div>
-      )}
+        <div>
+          <Popover
+            content={content}
+            title="Choose"
+            trigger="click"
+            placement="top"
+          >
+            <Button >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                <g
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  transform="translate(3 10)"
+                >
+                  <circle cx="2" cy="2" r="2"></circle>
+                  <circle cx="9" cy="2" r="2"></circle>
+                  <circle cx="16" cy="2" r="2"></circle>
+                </g>
+              </svg>
+            </Button>
+          </Popover>
+        </div>
+      </div>
     </div>
   );
 }

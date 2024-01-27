@@ -35,10 +35,30 @@
     align-items: center;
     gap: 10px;
     font-size: 1.2rem;
-    color: rgb(141, 136, 136);
+    color: rgb(192, 186, 186);
 
+
+}
+
+.task-options button{
+    background-color: white;
+    cursor: pointer;
 }
 
 .task-options div {
     cursor: pointer;
+}
+
+.ant-btn{
+    border: none;
+}
+
+.option-menu{
+    line-height: 2;
+}
+.option-menu button{
+    background-color: white;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
 }

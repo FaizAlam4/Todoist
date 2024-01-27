@@ -39,7 +39,6 @@ function ProjectSection() {
     setLoad(true);
     MyApi.get(`https://api.todoist.com/rest/v2/tasks?project_id=${id}`)
       .then((data) => {
-        console.log(data);
         dispatch(displayTask({ id: id, data: data }));
         setLoad(false);
       })
@@ -82,174 +81,172 @@ function ProjectSection() {
               <Spin />
             </div>
           ) : taskData && taskData.length > 0 ? (
-            <div style={{marginTop:'20px'}}>
+            <div style={{ marginTop: "20px" }}>
               {taskData.map((ele) => (
-                <TaskItem key={ele.id} taskItem={ele} />
+                <TaskItem key={ele.id} taskItem={ele} projectId={id}/>
               ))}
               <div
-            style={{
-            
-              width: "70%",
-              margin: "auto",
-              marginBottom: "30px",
-            }}
-          >
-            <span style={{ border: "none" }}>
-              {showBox ? (
-                <div>
-                  <div
-                    style={{
-                      border: "1px solid #d3cbcb",
-                      borderRadius: "10px",
-                      padding: "10px",
-                    }}
-                  >
-                    <input
-                      style={{ width: "100%" }}
-                      placeholder="Task name"
-                      type="text"
-                      value={taskName}
-                      onChange={(e) => setTaskName(e.target.value)}
-                      autoFocus
-                    />
-                    <input
-                      style={{ width: "100%" }}
-                      type="text"
-                      placeholder="Description"
-                      value={description}
-                      onChange={(e) => {
-                        setDescription(e.target.value);
-                      }}
-                      autoFocus
-                    />
+                style={{
+                  width: "70%",
+                  margin: "auto",
+                  marginBottom: "30px",
+                }}
+              >
+                <span style={{ border: "none" }}>
+                  {showBox ? (
+                    <div>
+                      <div
+                        style={{
+                          border: "1px solid #d3cbcb",
+                          borderRadius: "10px",
+                          padding: "10px",
+                        }}
+                      >
+                        <input
+                          style={{ width: "100%" }}
+                          placeholder="Task name"
+                          type="text"
+                          value={taskName}
+                          onChange={(e) => setTaskName(e.target.value)}
+                          autoFocus
+                        />
+                        <input
+                          style={{ width: "100%" }}
+                          type="text"
+                          placeholder="Description"
+                          value={description}
+                          onChange={(e) => {
+                            setDescription(e.target.value);
+                          }}
+                          autoFocus
+                        />
 
-                    <div className="add-task-btn">
+                        <div className="add-task-btn">
+                          <button
+                            onClick={() => {
+                              setShowBox(false);
+                            }}
+                            style={{ display: "block" }}
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            style={{ display: "block" }}
+                            onClick={() => {
+                              addTask();
+                            }}
+                          >
+                            Add Task
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div style={{ textAlign: "left", marginTop: "10px" }}>
                       <button
+                        className="btn-section"
                         onClick={() => {
-                          setShowBox(false);
-                        }}
-                        style={{ display: "block" }}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        style={{ display: "block" }}
-                        onClick={() => {
-                          addTask();
+                          setShowBox(true);
                         }}
                       >
-                        Add Task
+                        <PlusOutlined />
+                        <span
+                          style={{
+                            color: "grey",
+                            fontSize: "0.9rem",
+                            paddingLeft: "5px",
+                          }}
+                        >
+                          Add task
+                        </span>
                       </button>
                     </div>
-                  </div>
-                </div>
-              ) : (
-                <div style={{ textAlign: "left",marginTop:'10px' }}>
-                  <button
-                    className="btn-section"
-                    onClick={() => {
-                      setShowBox(true);
-                    }}
-                  >
-                    <PlusOutlined />
-                    <span
-                      style={{
-                        color: "grey",
-                        fontSize: "0.9rem",
-                        paddingLeft: "5px",
-                      }}
-                    >
-                      Add task
-                    </span>
-                  </button>
-                </div>
-              )}
-            </span>
-          </div>
+                  )}
+                </span>
+              </div>
             </div>
           ) : (
-
             <div>
-<div
-            style={{
-              marginTop: "0px",
-              width: "70%",
-              margin: "auto",
-              marginBottom: "30px",
-            }}
-          >
-            <span style={{ border: "none" }}>
-              {showBox ? (
-                <div>
-                  <div
-                    style={{
-                      border: "1px solid #d3cbcb",
-                      borderRadius: "10px",
-                      padding: "10px",
-                    }}
-                  >
-                    <input
-                      style={{ width: "100%" }}
-                      placeholder="Task name"
-                      type="text"
-                      value={taskName}
-                      onChange={(e) => setTaskName(e.target.value)}
-                      autoFocus
-                    />
-                    <input
-                      style={{ width: "100%" }}
-                      type="text"
-                      placeholder="Description"
-                      value={description}
-                      onChange={(e) => {
-                        setDescription(e.target.value);
-                      }}
-                      autoFocus
-                    />
+              <div
+                style={{
+                  marginTop: "0px",
+                  width: "70%",
+                  margin: "auto",
+                  marginBottom: "30px",
+                }}
+              >
+                <span style={{ border: "none" }}>
+                  {showBox ? (
+                    <div>
+                      <div
+                        style={{
+                          border: "1px solid #d3cbcb",
+                          borderRadius: "10px",
+                          padding: "10px",
+                        }}
+                      >
+                        <input
+                          style={{ width: "100%" }}
+                          placeholder="Task name"
+                          type="text"
+                          value={taskName}
+                          onChange={(e) => setTaskName(e.target.value)}
+                          autoFocus
+                        />
+                        <input
+                          style={{ width: "100%" }}
+                          type="text"
+                          placeholder="Description"
+                          value={description}
+                          onChange={(e) => {
+                            setDescription(e.target.value);
+                          }}
+                          autoFocus
+                        />
 
-                    <div className="add-task-btn">
+                        <div className="add-task-btn">
+                          <button
+                            onClick={() => {
+                              setShowBox(false);
+                            }}
+                            style={{ display: "block" }}
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            style={{ display: "block" }}
+                            onClick={() => {
+                              addTask();
+                            }}
+                          >
+                            Add Task
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div style={{ textAlign: "left", marginTop: "10px" }}>
                       <button
+                        className="btn-section"
                         onClick={() => {
-                          setShowBox(false);
-                        }}
-                        style={{ display: "block" }}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        style={{ display: "block" }}
-                        onClick={() => {
-                          addTask();
+                          setShowBox(true);
                         }}
                       >
-                        Add Task
+                        <PlusOutlined />
+                        <span
+                          style={{
+                            color: "grey",
+                            fontSize: "0.9rem",
+                            paddingLeft: "5px",
+                          }}
+                        >
+                          Add task
+                        </span>
                       </button>
                     </div>
-                  </div>
-                </div>
-              ) : (
-                <div style={{ textAlign: "left",marginTop:'10px' }}>
-                  <button
-                    className="btn-section"
-                    onClick={() => {
-                      setShowBox(true);
-                    }}
-                  >
-                    <PlusOutlined />
-                    <span
-                      style={{
-                        color: "grey",
-                        fontSize: "0.9rem",
-                        paddingLeft: "5px",
-                      }}
-                    >
-                      Add task
-                    </span>
-                  </button>
-                </div>
-              )}
-            </span>
-          </div>
+                  )}
+                </span>
+              </div>
 
               <div style={{ marginTop: "40px" }}>
                 <img
@@ -268,7 +265,6 @@ function ProjectSection() {
               </div>
             </div>
           )}
-          
         </div>
       )}
     </div>
