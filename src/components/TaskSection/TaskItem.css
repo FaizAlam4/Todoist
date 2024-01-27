@@ -40,23 +40,41 @@
 
 }
 
-.task-options button{
+.task-options button {
     background-color: white;
     cursor: pointer;
+}
+
+.task-options :first-child>button:hover {
+    color: rgb(120, 120, 239);
+}
+
+.task-options div:nth-child(2)>button:hover {
+    cursor: not-allowed;
+}
+
+.task-options div:nth-child(3)>button:hover {
+    cursor: not-allowed;
+}
+
+.task-options :first-child>button:hover {
+    color: rgb(120, 120, 239);
 }
 
 .task-options div {
     cursor: pointer;
 }
 
-.ant-btn{
+.ant-btn {
     border: none;
 }
 
-.option-menu{
-    line-height: 2;
+.option-menu {
+    padding-top: 10px;
+    line-height: 4;
 }
-.option-menu button{
+
+.option-menu button {
     background-color: white;
     cursor: pointer;
     width: 100%;

@@ -46,21 +46,25 @@ function ProjectSection() {
   }, [id]);
 
   const addTask = () => {
-    MyApi.post(
-      `https://api.todoist.com/rest/v2/tasks?project_id=${id}`,
-      { content: taskName, description: description },
-      headers
-    ).then((data) => {
-      dispatch(createTask({ id: id, data: data }));
-      setTaskName("");
-      setDescription("");
-    });
+    if (taskName.trim().length == 0) {
+      alert("Enter task name!");
+    } else {
+      MyApi.post(
+        `https://api.todoist.com/rest/v2/tasks?project_id=${id}`,
+        { content: taskName, description: description },
+        headers
+      ).then((data) => {
+        dispatch(createTask({ id: id, data: data }));
+        setTaskName("");
+        setDescription("");
+      });
+    }
   };
 
   return (
     <div>
       {loading ? (
-        <div style={{ fontSize: "3rem",marginTop:'180px' }}>
+        <div style={{ fontSize: "3rem", marginTop: "180px" }}>
           <LoadingOutlined />
         </div>
       ) : (
@@ -77,13 +81,13 @@ function ProjectSection() {
             </span>
           </div>
           {load ? (
-            <div style={{marginTop:'200px'}}>
+            <div style={{ marginTop: "200px" }}>
               <Spin />
             </div>
           ) : taskData && taskData.length > 0 ? (
             <div style={{ marginTop: "20px" }}>
               {taskData.map((ele) => (
-                <TaskItem key={ele.id} taskItem={ele} projectId={id}/>
+                <TaskItem key={ele.id} taskItem={ele} projectId={id} />
               ))}
               <div
                 style={{
