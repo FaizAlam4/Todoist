@@ -212,7 +212,7 @@ function SideMenu() {
               }}
               style={{
                 visibility: show ? "visible" : "hidden",
-                marginRight: "20px",
+                marginRight: "30px",
               }}
             >
               {showFavorite ? <DownOutlined /> : <RightOutlined />}
