@@ -38,9 +38,9 @@ function SideMenu() {
     "X-Request-Id": uuidv4(),
   };
 
-  const projectName=projectData.map((ele)=>{
-   return ele.name;
-  })
+  const projectName = projectData.map((ele) => {
+    return ele.name;
+  });
 
   useEffect(() => {
     myApi
@@ -69,9 +69,9 @@ function SideMenu() {
 
   const createNewProject = () => {
     input.trim().length > 0
-      ? ((projectName.includes(input.trim()))
-        ? (alert("Project with same name already exists!"))
-        : (myApi
+      ? projectName.includes(input.trim())
+        ? alert("Project with same name already exists!")
+        : myApi
             .post(
               `https://api.todoist.com/rest/v2/projects`,
               { name: input.trim(), is_favorite: check },
@@ -81,8 +81,8 @@ function SideMenu() {
               dispatch(createProject(data));
               setInput("");
             })
-            .catch((err) => console.log(err))))
-      : (alert("Enter name!"));
+            .catch((err) => console.log(err))
+      : alert("Enter name!");
   };
 
   const handleDelete = (id) => {
@@ -129,10 +129,11 @@ function SideMenu() {
           handleOk();
           createNewProject();
         }}
+        okButtonProps={{ style: { backgroundColor: "rgb(206, 16, 16)" } }}
         autoFocus={open}
         onCancel={handleCancel}
       >
-        <p style={{ lineHeight: "3", textAlign: "left" }}>
+        <p style={{ lineHeight: "3", textAlign: "left", fontWeight: "bold" }}>
           Name
           <br />
           <input
@@ -151,7 +152,11 @@ function SideMenu() {
               setInput(e.target.value);
             }}
           />
-          <Switch onChange={onChange} />
+          <Switch
+            style={{ backgroundColor: "rgb(206, 16, 16)" }}
+            onChange={onChange}
+          />{" "}
+          Add to favorites
         </p>
       </Modal>
       <div className="project-wrapper">

@@ -10,7 +10,7 @@ import social from "../../assets/social.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./ProjectItem.css";
-import { Popover, Button, Modal, Switch } from "antd";
+import { Popover, Button, Modal, Switch, Popconfirm } from "antd";
 function ProjectItem({ ele, handleDelete, handleUpdate }) {
   const [ellipsis, setEllipsis] = useState(false);
 
@@ -57,13 +57,31 @@ function ProjectItem({ ele, handleDelete, handleUpdate }) {
         </p>
       )}
 
-      <p
-        onClick={() => {
-          handleDelete(ele.id);
-        }}
-      >
+      <p>
         <DeleteOutlined />
-        Remove
+
+        <Popconfirm
+          onConfirm={() => {
+            handleDelete(ele.id);
+          }}
+          title="Delete the task"
+          description="Are you sure to delete this task?"
+          okText="Yes"
+          cancelText="No"
+          okButtonProps={{
+            style: { backgroundColor: "rgb(206, 16, 16)", color: "white" },
+          }}
+        >
+          <button
+            style={{
+              backgroundColor: "white",
+              cursor: "pointer",
+              border: "none",
+            }}
+          >
+            Delete
+          </button>
+        </Popconfirm>
       </p>
     </div>
   );

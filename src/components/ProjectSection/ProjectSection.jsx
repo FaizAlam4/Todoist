@@ -31,7 +31,6 @@ function ProjectSection() {
   };
   let chosenProject = projectData.filter((ele) => ele.id == id);
   useEffect(() => {
-    
     setMyProject(chosenProject[0]);
   }, [id, projectData]);
 
@@ -87,7 +86,12 @@ function ProjectSection() {
           ) : taskData && taskData.length > 0 ? (
             <div style={{ marginTop: "20px" }}>
               {taskData.map((ele) => (
-                <TaskItem key={ele.id} taskItem={ele} projectId={id} projectName={myProject.name} />
+                <TaskItem
+                  key={ele.id}
+                  taskItem={ele}
+                  projectId={id}
+                  projectName={myProject.name}
+                />
               ))}
               <div
                 style={{

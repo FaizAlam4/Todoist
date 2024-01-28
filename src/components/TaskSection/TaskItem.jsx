@@ -1,12 +1,19 @@
 /* eslint-disable react/prop-types */
 import "./TaskItem.css";
-import { CheckOutlined } from "@ant-design/icons";
-import { Button, Popover, Spin } from "antd";
+import {
+  CheckOutlined,
+  DeleteOutlined,
+  MenuUnfoldOutlined,
+} from "@ant-design/icons";
+import { Button, Popover, Spin, Popconfirm } from "antd";
 import { useState } from "react";
 import MyApi from "../../api/myapi.js";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useMemo } from "react";
-import { RadiusBottomleftOutlined } from "@ant-design/icons";
+import {
+  RadiusBottomleftOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 import { notification } from "antd";
 import { v4 as uuidv4 } from "uuid";
 import { createTask, deleteTask, editTask } from "../../feature/taskSlice.js";
@@ -98,19 +105,26 @@ function TaskItem({ taskItem, projectId, projectName }) {
     let selectedProject = e.target.value;
     let projectValue = projectData.filter((ele) => ele.name == selectedProject);
     let selectedProjectId = projectValue[0].id;
-    MyApi.post(`https://api.todoist.com/rest/v2/tasks?project_id=${selectedProjectId}`,{ content: taskItem.content, description: taskItem.description },
-    headers).then((data)=>{
-   dispatch(createTask({id:selectedProjectId,data:data}))
-   MyApi.delete(`https://api.todoist.com/rest/v2/tasks/${taskItem.id}`).then(() => {
-    dispatch(deleteTask({ projectId: projectId, taskItemId: taskItem.id }));
-
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-    }).then((err)=>{
-      console.log(err)
-    })
+    MyApi.post(
+      `https://api.todoist.com/rest/v2/tasks?project_id=${selectedProjectId}`,
+      { content: taskItem.content, description: taskItem.description },
+      headers
+    )
+      .then((data) => {
+        dispatch(createTask({ id: selectedProjectId, data: data }));
+        MyApi.delete(`https://api.todoist.com/rest/v2/tasks/${taskItem.id}`)
+          .then(() => {
+            dispatch(
+              deleteTask({ projectId: projectId, taskItemId: taskItem.id })
+            );
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .then((err) => {
+        console.log(err);
+      });
   };
 
   const content2 = (
@@ -126,7 +140,9 @@ function TaskItem({ taskItem, projectId, projectName }) {
         </option>
         {projectData.map((item) => {
           return item.name != projectName ? (
-            <option value={item.name}>#{item.name}</option>
+            <option style={{ fontWeight: "bold" }} value={item.name}>
+              #{item.name}
+            </option>
           ) : null;
         })}
       </select>
@@ -140,12 +156,22 @@ function TaskItem({ taskItem, projectId, projectName }) {
           display: "flex",
           flexFlow: "row nowrap",
           justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
-        <button style={{ display: "block" }} onClick={removeTask}>
-          {" "}
-          Delete
-        </button>{" "}
+        <Popconfirm
+          title="Delete the task"
+          description="Are you sure to delete this task?"
+          icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+          onConfirm={removeTask}
+          okButtonProps={{ style: { backgroundColor: "rgb(206, 16, 16)" } }}
+        >
+          <button style={{ display: "block" }}>
+            {" "}
+            <DeleteOutlined /> Delete
+          </button>{" "}
+        </Popconfirm>
+
         {load ? (
           <span style={{ display: "block" }}>
             <Spin />
@@ -159,7 +185,9 @@ function TaskItem({ taskItem, projectId, projectName }) {
           trigger="click"
           placement="right"
         >
-          <button> Move..</button>
+          <button>
+            <MenuUnfoldOutlined /> Move..
+          </button>
         </Popover>
       </p>
     </div>
