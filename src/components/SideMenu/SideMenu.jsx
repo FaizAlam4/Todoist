@@ -38,6 +38,10 @@ function SideMenu() {
     "X-Request-Id": uuidv4(),
   };
 
+  const projectName=projectData.map((ele)=>{
+   return ele.name;
+  })
+
   useEffect(() => {
     myApi
       .get(`https://api.todoist.com/rest/v2/projects`)
@@ -65,18 +69,20 @@ function SideMenu() {
 
   const createNewProject = () => {
     input.trim().length > 0
-      ? myApi
-          .post(
-            `https://api.todoist.com/rest/v2/projects`,
-            { name: input, is_favorite: check },
-            headers
-          )
-          .then((data) => {
-            dispatch(createProject(data));
-            setInput("");
-          })
-          .catch((err) => console.log(err))
-      : alert("Enter name!");
+      ? ((projectName.includes(input.trim()))
+        ? (alert("Project with same name already exists!"))
+        : (myApi
+            .post(
+              `https://api.todoist.com/rest/v2/projects`,
+              { name: input.trim(), is_favorite: check },
+              headers
+            )
+            .then((data) => {
+              dispatch(createProject(data));
+              setInput("");
+            })
+            .catch((err) => console.log(err))))
+      : (alert("Enter name!"));
   };
 
   const handleDelete = (id) => {

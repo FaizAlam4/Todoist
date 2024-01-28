@@ -4,18 +4,18 @@ import { CheckOutlined } from "@ant-design/icons";
 import { Button, Popover, Spin } from "antd";
 import { useState } from "react";
 import MyApi from "../../api/myapi.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import React, { useMemo } from "react";
 import { RadiusBottomleftOutlined } from "@ant-design/icons";
 import { notification } from "antd";
 import { v4 as uuidv4 } from "uuid";
-import { deleteTask, editTask } from "../../feature/taskSlice.js";
+import { createTask, deleteTask, editTask } from "../../feature/taskSlice.js";
 
 const Context = React.createContext({
   name: "Default",
 });
 
-function TaskItem({ taskItem, projectId }) {
+function TaskItem({ taskItem, projectId, projectName }) {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement) => {
     api.info({
@@ -36,6 +36,10 @@ function TaskItem({ taskItem, projectId }) {
   );
 
   const dispatch = useDispatch();
+  const { projectData } = useSelector((state) => {
+    return state.project;
+  });
+  console.log(projectData);
   const [load, setLoad] = useState(false);
 
   const [showTick, setShowTick] = useState(false);
@@ -62,7 +66,6 @@ function TaskItem({ taskItem, projectId }) {
   };
 
   const editMyTask = () => {
-    console.log("edit");
     MyApi.post(
       `https://api.todoist.com/rest/v2/tasks/${taskItem.id}`,
       { content: taskName, description: description },
@@ -91,6 +94,45 @@ function TaskItem({ taskItem, projectId }) {
     });
   };
 
+  const moveTask = (e) => {
+    let selectedProject = e.target.value;
+    let projectValue = projectData.filter((ele) => ele.name == selectedProject);
+    let selectedProjectId = projectValue[0].id;
+    MyApi.post(`https://api.todoist.com/rest/v2/tasks?project_id=${selectedProjectId}`,{ content: taskItem.content, description: taskItem.description },
+    headers).then((data)=>{
+   dispatch(createTask({id:selectedProjectId,data:data}))
+   MyApi.delete(`https://api.todoist.com/rest/v2/tasks/${taskItem.id}`).then(() => {
+    dispatch(deleteTask({ projectId: projectId, taskItemId: taskItem.id }));
+
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+    }).then((err)=>{
+      console.log(err)
+    })
+  };
+
+  const content2 = (
+    <div>
+      <select
+        onChange={(e) => {
+          moveTask(e);
+        }}
+        style={{ backgroundColor: "white" }}
+      >
+        <option value="all" defaultChecked>
+          Select Project
+        </option>
+        {projectData.map((item) => {
+          return item.name != projectName ? (
+            <option value={item.name}>#{item.name}</option>
+          ) : null;
+        })}
+      </select>
+    </div>
+  );
+
   const content = (
     <div className="option-menu">
       <p
@@ -111,7 +153,14 @@ function TaskItem({ taskItem, projectId }) {
         ) : null}
       </p>
       <p>
-        <button> Move</button>
+        <Popover
+          content={content2}
+          title="Move to"
+          trigger="click"
+          placement="right"
+        >
+          <button> Move..</button>
+        </Popover>
       </p>
     </div>
   );
