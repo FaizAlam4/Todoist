@@ -105,14 +105,14 @@ function TaskItem({ taskItem, projectId, projectName }) {
     let selectedProject = e.target.value;
     let projectValue = projectData.filter((ele) => ele.name == selectedProject);
     let selectedProjectId = projectValue[0].id;
-    console.log(selectedProjectId)
+    console.log(selectedProjectId);
     MyApi.post(
       `https://api.todoist.com/rest/v2/tasks?project_id=${selectedProjectId}`,
       { content: taskItem.content, description: taskItem.description },
       headers
     )
       .then((data) => {
-        console.log(data)
+        console.log(data);
         dispatch(createTask({ id: selectedProjectId, data: data }));
         MyApi.delete(`https://api.todoist.com/rest/v2/tasks/${taskItem.id}`)
           .then(() => {

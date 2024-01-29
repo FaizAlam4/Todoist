@@ -6,6 +6,7 @@ import ProjectHome from "../ProjectSection/ProjectHome.jsx";
 import SideMenu from "../SideMenu/SideMenu.jsx";
 import { Routes, Route } from "react-router-dom";
 import NavigationTwo from "../Navigation/NavigationTwo.jsx";
+import ErrorPage from "../ErrorComponent/ErrorPage.jsx";
 
 const headerStyle = {
   textAlign: "center",
@@ -41,23 +42,26 @@ function MyLayout() {
   return (
     <Layout style={layoutStyle}>
       <Sider width="20%" style={siderStyle}>
-        <SideMenu />
+        <Routes>
+          <Route path={"/"} element={<SideMenu />}></Route>
+          <Route path={"/:id"} element={<SideMenu />}></Route>
+        </Routes>
       </Sider>
       <Layout>
         <Header style={headerStyle}>
           <Routes>
-            <Route path={'/'} element={<Navigation/>}></Route>
-            <Route path={'/project'} element={<Navigation/>}></Route>
-            <Route path={'project/:id'} element={<NavigationTwo/>}></Route>
+            <Route path={"/"} element={<Navigation />}></Route>
+            <Route path={"/:id"} element={<NavigationTwo />}></Route>
           </Routes>
-        
         </Header>
         <Content style={contentStyle}>
           <Routes>
-         
-            <Route path={'/'} element={<ProjectHome/>}> </Route>
-            <Route path={'/project'} element={<ProjectHome/>}></Route>
-            <Route path={"project/:id"} element={<ProjectSection />}></Route>
+            <Route path={"/"} element={<ProjectHome />}>
+              {" "}
+            </Route>
+            <Route path={"/:id"} element={<ProjectSection />}></Route>
+            <Route path={"/*"} element={<ErrorPage />}></Route>
+            <Route path={"/page-not-found"} element={<ErrorPage />}></Route>
           </Routes>
         </Content>
       </Layout>

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import "./ProjectSection.css";
@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 
 function ProjectSection() {
   const dispatch = useDispatch();
-
+  const navigate= useNavigate()
   const { id } = useParams();
   const { taskData } = useSelector((state) => {
     return { taskData: state.task.taskData[id] || [] };
@@ -30,6 +30,12 @@ function ProjectSection() {
     "X-Request-Id": uuidv4(),
   };
   let chosenProject = projectData.filter((ele) => ele.id == id);
+  if(chosenProject[0]){
+    console.log("Navigated successfully!")
+  }
+  else{
+    navigate('/page-not-found')
+  }
   useEffect(() => {
     setMyProject(chosenProject[0]);
   }, [id, projectData]);

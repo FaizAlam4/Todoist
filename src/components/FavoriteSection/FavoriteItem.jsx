@@ -67,7 +67,7 @@ function FavoriteItem({ ele, handleDelete, handleUpdate }) {
       onMouseLeave={() => setEllipsis(false)}
     >
       <div className="fav-block">
-        <Link to={`/project/${ele.id}`} className="fav-block">
+        <Link to={`/${ele.id}`} className="fav-block">
           <img id="social" src={social} alt="" />{" "}
           <li className="fav-block-item-2">{ele.name}</li>
         </Link>

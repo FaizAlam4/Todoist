@@ -116,7 +116,7 @@ function ProjectHome() {
           ) : (
             projectData.map((ele) =>
               ele.name != "Inbox" ? (
-                <Link key={ele.id} to={`project/${ele.id}`}>
+                <Link key={ele.id} to={`/${ele.id}`}>
                   <div
                     style={{
                       display: "flex",

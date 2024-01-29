@@ -95,7 +95,7 @@ function ProjectItem({ ele, handleDelete, handleUpdate }) {
       onMouseLeave={() => setEllipsis(false)}
     >
       <div className="list-block">
-        <Link to={`/project/${ele.id}`} className="list-block">
+        <Link to={`/${ele.id}`} className="list-block">
           <img id="social" className="list-block-item" src={social} alt="" />{" "}
           <li className="list-block-item-2">{ele.name}</li>
         </Link>
