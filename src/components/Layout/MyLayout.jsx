@@ -7,6 +7,7 @@ import SideMenu from "../SideMenu/SideMenu.jsx";
 import { Routes, Route } from "react-router-dom";
 import NavigationTwo from "../Navigation/NavigationTwo.jsx";
 import ErrorPage from "../ErrorComponent/ErrorPage.jsx";
+import ResourceError from "../ErrorComponent/ResourceError.jsx";
 
 const headerStyle = {
   textAlign: "center",
@@ -61,7 +62,7 @@ function MyLayout() {
             </Route>
             <Route path={"/:id"} element={<ProjectSection />}></Route>
             <Route path={"/*"} element={<ErrorPage />}></Route>
-            <Route path={"/page-not-found"} element={<ErrorPage />}></Route>
+            <Route path={"/page-not-found"} element={<ResourceError />}></Route>
           </Routes>
         </Content>
       </Layout>
