@@ -23,8 +23,8 @@ function ProjectHome() {
           style={{
             border: "1px solid #d8d4d4",
             borderRadius: "7px",
-            width: "100%",
-            height: "42px",
+            width: "90%",
+            minHeight: "42px",
             display: "flex",
             flexFlow: "row wrap",
             justifyContent: "left",

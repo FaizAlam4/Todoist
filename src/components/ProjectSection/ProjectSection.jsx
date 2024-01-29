@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 
 function ProjectSection() {
   const dispatch = useDispatch();
-  const navigate= useNavigate()
+  const navigate = useNavigate();
   const { id } = useParams();
   const { taskData } = useSelector((state) => {
     return { taskData: state.task.taskData[id] || [] };
@@ -22,6 +22,7 @@ function ProjectSection() {
   const [myProject, setMyProject] = useState(null);
   const [load, setLoad] = useState(true);
   const [showBox, setShowBox] = useState(false);
+  const [createLoad, setCreateLoad] = useState(false);
   const [taskName, setTaskName] = useState("");
   const [description, setDescription] = useState("");
   console.log(taskName, description);
@@ -30,11 +31,10 @@ function ProjectSection() {
     "X-Request-Id": uuidv4(),
   };
   let chosenProject = projectData.filter((ele) => ele.id == id);
-  if(chosenProject[0]){
-    console.log("Navigated successfully!")
-  }
-  else{
-    navigate('/page-not-found')
+  if (chosenProject[0]) {
+    console.log("Navigated successfully!");
+  } else {
+    navigate("/page-not-found");
   }
   useEffect(() => {
     setMyProject(chosenProject[0]);
@@ -54,12 +54,14 @@ function ProjectSection() {
     if (taskName.trim().length == 0) {
       alert("Enter task name!");
     } else {
+      setCreateLoad(true);
       MyApi.post(
         `https://api.todoist.com/rest/v2/tasks?project_id=${id}`,
         { content: taskName, description: description },
         headers
       ).then((data) => {
         dispatch(createTask({ id: id, data: data }));
+        setCreateLoad(false);
         setTaskName("");
         setDescription("");
       });
@@ -178,6 +180,11 @@ function ProjectSection() {
                   )}
                 </span>
               </div>
+              {createLoad ? (
+                <div>
+                  <Spin />
+                </div>
+              ) : null}
             </div>
           ) : (
             <div>
@@ -260,6 +267,11 @@ function ProjectSection() {
                     </div>
                   )}
                 </span>
+                {createLoad ? (
+                  <div>
+                    <Spin />
+                  </div>
+                ) : null}
               </div>
 
               <div style={{ marginTop: "40px" }}>
