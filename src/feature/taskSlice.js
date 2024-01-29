@@ -16,9 +16,10 @@ export const taskSlice = createSlice({
     },
     createTask: (state, action) => {
       const { id, data } = action.payload;
+      const existingData = Array.isArray(state.taskData[id]) ? state.taskData[id] : [];
       return {
         ...state,
-        taskData: { ...state.taskData, [id]: [...state.taskData[id], data] },
+        taskData: { ...state.taskData, [id]: [...existingData, data] },
       };
     },
     deleteTask: (state, action) => {
