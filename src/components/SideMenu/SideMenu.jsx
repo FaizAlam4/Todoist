@@ -32,6 +32,8 @@ function SideMenu() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [input, setInput] = useState("");
   const [check, setCheck] = useState(false);
+  const [deleteLoad, setDeleteLoad] = useState(false);
+  const [editLoad, setEditLoad] = useState(false);
 
   const headers = {
     "Content-Type": "application/json",
@@ -86,15 +88,18 @@ function SideMenu() {
   };
 
   const handleDelete = (id) => {
+    setDeleteLoad(true);
     myApi
       .delete(`https://api.todoist.com/rest/v2/projects/${id}`)
       .then((data) => {
         console.log("Deleted successfully!", data);
         dispatch(deleteProject(id));
+        setDeleteLoad(false);
         navigate("/");
       });
   };
   const handleUpdate = (projectId, newName, status) => {
+    setEditLoad(true);
     myApi
       .post(
         `https://api.todoist.com/rest/v2/projects/${projectId}`,
@@ -105,6 +110,7 @@ function SideMenu() {
         console.log(data);
         let newId = data.id;
         dispatch(editProject({ newId, data }));
+        setEditLoad(false);
       })
       .catch((err) => console.log(err));
   };
@@ -153,7 +159,7 @@ function SideMenu() {
             }}
           />
           <Switch
-            style={{ backgroundColor: check? "rgb(206, 16, 16)":'grey' }}
+            style={{ backgroundColor: check ? "rgb(206, 16, 16)" : "grey" }}
             onChange={onChange}
           />{" "}
           Add to favorites
@@ -203,6 +209,8 @@ function SideMenu() {
               <ProjectItem
                 key={ele.id}
                 ele={ele}
+                deleteLoad={deleteLoad}
+                editLoad={editLoad}
                 handleDelete={handleDelete}
                 handleUpdate={handleUpdate}
               />
@@ -237,6 +245,8 @@ function SideMenu() {
                       key={ele.id}
                       ele={ele}
                       handleDelete={handleDelete}
+                      deleteLoad={deleteLoad}
+                      editLoad={editLoad}
                       handleUpdate={handleUpdate}
                     />
                   ) : null;

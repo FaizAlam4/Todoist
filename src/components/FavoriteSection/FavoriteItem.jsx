@@ -8,10 +8,16 @@ import {
 import social from "../../assets/social.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Popover, Button, Modal, Switch } from "antd";
+import { Popover, Button, Modal, Switch, Spin } from "antd";
 import "./FavoriteItem.css";
 
-function FavoriteItem({ ele, handleDelete, handleUpdate }) {
+function FavoriteItem({
+  ele,
+  handleDelete,
+  handleUpdate,
+  deleteLoad,
+  editLoad,
+}) {
   const [ellipsis, setEllipsis] = useState(false);
 
   const [editData, setEditData] = useState(ele.name);
@@ -46,7 +52,7 @@ function FavoriteItem({ ele, handleDelete, handleUpdate }) {
         }}
       >
         <HeartFilled />
-        Remove from favourites
+        Remove from favourites {editLoad ? <Spin /> : null}
       </p>
       <p
         onClick={() => {
@@ -54,7 +60,7 @@ function FavoriteItem({ ele, handleDelete, handleUpdate }) {
         }}
       >
         <DeleteOutlined />
-        Remove
+        Remove {deleteLoad ? <Spin /> : null}
       </p>
     </div>
   );

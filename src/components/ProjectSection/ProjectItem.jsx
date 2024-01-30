@@ -10,8 +10,14 @@ import social from "../../assets/social.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./ProjectItem.css";
-import { Popover, Button, Modal, Switch, Popconfirm } from "antd";
-function ProjectItem({ ele, handleDelete, handleUpdate }) {
+import { Popover, Button, Modal, Switch, Popconfirm, Spin } from "antd";
+function ProjectItem({
+  ele,
+  handleDelete,
+  handleUpdate,
+  deleteLoad,
+  editLoad,
+}) {
   const [ellipsis, setEllipsis] = useState(false);
 
   const [editData, setEditData] = useState(ele.name);
@@ -53,7 +59,7 @@ function ProjectItem({ ele, handleDelete, handleUpdate }) {
         >
           {" "}
           <HeartOutlined />
-          Add to favourites
+          Add to favourites {editLoad ? <Spin /> : null}
         </p>
       )}
 
@@ -80,7 +86,8 @@ function ProjectItem({ ele, handleDelete, handleUpdate }) {
             }}
           >
             Delete
-          </button>
+          </button>{" "}
+          {deleteLoad ? <Spin /> : null}
         </Popconfirm>
       </p>
     </div>
@@ -111,7 +118,7 @@ function ProjectItem({ ele, handleDelete, handleUpdate }) {
             handleOk();
             handleUpdate(ele.id, editData, favCheck);
           }}
-          okButtonProps={{style:{backgroundColor:'rgb(206, 16, 16)'}}}
+          okButtonProps={{ style: { backgroundColor: "rgb(206, 16, 16)" } }}
           onCancel={handleCancel}
         >
           <p style={{ lineHeight: "3", textAlign: "left" }}>
@@ -127,8 +134,12 @@ function ProjectItem({ ele, handleDelete, handleUpdate }) {
               autoFocus
             />{" "}
             <br />
-            Favorite: <Switch  onChange={onChange} 
-style={{backgroundColor:favCheck?'rgb(206, 16, 16)':'grey'}}
+            Favorite:{" "}
+            <Switch
+              onChange={onChange}
+              style={{
+                backgroundColor: favCheck ? "rgb(206, 16, 16)" : "grey",
+              }}
             />
           </p>
         </Modal>
