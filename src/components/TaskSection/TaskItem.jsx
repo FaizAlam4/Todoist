@@ -23,7 +23,11 @@ const Context = React.createContext({
 });
 
 function TaskItem({ taskItem, projectId, projectName }) {
+
+
   const [api, contextHolder] = notification.useNotification();
+  const [moveLoad, setMoveLoad] = useState(false);
+
   const openNotification = (placement) => {
     api.info({
       message: `Task ${taskItem.content} is done for the day!`,
@@ -102,6 +106,7 @@ function TaskItem({ taskItem, projectId, projectName }) {
   };
 
   const moveTask = (e) => {
+    setMoveLoad(true)
     let selectedProject = e.target.value;
     let projectValue = projectData.filter((ele) => ele.name == selectedProject);
     let selectedProjectId = projectValue[0].id;
@@ -119,6 +124,7 @@ function TaskItem({ taskItem, projectId, projectName }) {
             dispatch(
               deleteTask({ projectId: projectId, taskItemId: taskItem.id })
             );
+            setMoveLoad(false)
           })
           .catch((err) => {
             console.log(err);
@@ -138,7 +144,7 @@ function TaskItem({ taskItem, projectId, projectName }) {
         style={{ backgroundColor: "white" }}
       >
         <option value="all" defaultChecked>
-          Select Project
+          Select Project  
         </option>
         {projectData.map((item) => {
           return item.name != projectName ? (
@@ -189,6 +195,7 @@ function TaskItem({ taskItem, projectId, projectName }) {
         >
           <button>
             <MenuUnfoldOutlined /> Move..
+            {moveLoad? <span style={{paddingLeft:'80px'}}><Spin/></span>:null}
           </button>
         </Popover>
       </p>

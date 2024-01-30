@@ -153,7 +153,7 @@ function SideMenu() {
             }}
           />
           <Switch
-            style={{ backgroundColor: "rgb(206, 16, 16)" }}
+            style={{ backgroundColor: check? "rgb(206, 16, 16)":'grey' }}
             onChange={onChange}
           />{" "}
           Add to favorites

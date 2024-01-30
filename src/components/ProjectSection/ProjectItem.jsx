@@ -111,6 +111,7 @@ function ProjectItem({ ele, handleDelete, handleUpdate }) {
             handleOk();
             handleUpdate(ele.id, editData, favCheck);
           }}
+          okButtonProps={{style:{backgroundColor:'rgb(206, 16, 16)'}}}
           onCancel={handleCancel}
         >
           <p style={{ lineHeight: "3", textAlign: "left" }}>
@@ -126,7 +127,9 @@ function ProjectItem({ ele, handleDelete, handleUpdate }) {
               autoFocus
             />{" "}
             <br />
-            Favorite: <Switch onChange={onChange} />
+            Favorite: <Switch  onChange={onChange} 
+style={{backgroundColor:favCheck?'rgb(206, 16, 16)':'grey'}}
+            />
           </p>
         </Modal>
       </div>
